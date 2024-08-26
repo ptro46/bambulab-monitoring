@@ -1,0 +1,19 @@
+#!/bin/bash
+uri=$1
+if [ -z "$uri" ]
+then
+    echo "Usage $0 uri"
+    exit 0
+fi
+accessToken=$(cat accessToken)
+rm -f output.json
+echo "GET https://api.bambulab.com/${uri}"
+curl -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Bearer ${accessToken}" https://api.bambulab.com/${uri} > output.json
+cat output.json | jq
+
+#
+#
+# devices         --> v1/iot-service/api/user/bind
+# profile         --> v1/user-service/my/profile
+# slicer-settings --> v1/iot-service/api/slicer/setting?version=undefined
+# tasks           --> v1/user-service/my/tasks 2>/dev/null > tasks.json

@@ -1,0 +1,6 @@
+#!/bin/bash
+accessToken=$(cat accessToken)
+rm -f tasks.json
+curl -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Bearer ${accessToken}"  https://api.bambulab.com/v1/user-service/my/tasks 2>/dev/null > tasks.json
+cat tasks.json | jq
+

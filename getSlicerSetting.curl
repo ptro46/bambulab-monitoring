@@ -1,0 +1,5 @@
+#!/bin/bash
+accessToken=$(cat accessToken)
+rm -f slicer-setting.json
+curl -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Bearer ${accessToken}" "https://api.bambulab.com/v1/iot-service/api/slicer/setting?version=undefined"  2>/dev/null > slicer-setting.json
+cat slicer-setting.json | jq

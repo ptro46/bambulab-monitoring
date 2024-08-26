@@ -1,0 +1,12 @@
+#!/bin/bash
+rm -f login.json accessToken refreshToken
+
+login=$(cat credentials | grep login | awk -F':' '{printf("%s\n",$2);}' | sed -e 's/ //g')
+password=$(cat credentials | grep password | awk -F':' '{printf("%s\n",$2);}' | sed -e 's/ //g')
+
+echo "{ \"account\": \"${login}\", \"password\": \"${password}\" }" > payload.json
+
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" https://api.bambulab.com/v1/user-service/user/login -d @payload.json 2>/dev/null | jq > login.json
+rm -f payload.json
+cat login.json  | grep accessToken | awk -F':' '{printf("%s\n",$2);}' | sed -e 's/ "//' | sed -e 's/",//' > accessToken
+cat login.json  | grep refreshToken | awk -F':' '{printf("%s\n",$2);}' | sed -e 's/ "//' | sed -e 's/",//' > refreshToken
